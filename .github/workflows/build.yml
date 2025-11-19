@@ -1,0 +1,33 @@
+name: Build eMark
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev libdb++-dev libboost-all-dev libprotobuf-dev libqrencode-dev libminiupnpc-dev qt5-qmake libqt5gui5 libqt5core5a libqt5dbus5 libqt5network5 libqt5widgets5 libqt5xml5 qtbase5-dev-tools qttools5-dev-tools
+      
+      - name: Build eMark daemon
+        run: |
+          cd src
+          make -f makefile.unix
+      
+      - name: Build eMark QT
+        run: |
+          qmake
+          make
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: emark-binaries
+          path: |
+            src/eMarkd
+            eMark-qt

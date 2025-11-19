@@ -28,7 +28,7 @@ jobs:
         cp eMarkd ../../output/
         
     - name: Upload eMarkd artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: eMarkd
         path: output/eMarkd
@@ -54,7 +54,7 @@ jobs:
         cp eMark-qt ../output/
         
     - name: Upload eMark-qt artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: eMark-qt
         path: output/eMark-qt

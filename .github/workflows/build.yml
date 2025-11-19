@@ -24,7 +24,7 @@ jobs:
         git clone https://github.com/emarkproject/eMark
         cd eMark/src
         make -f makefile.unix
-        mkdir -p output
+        mkdir -p ../../output
         cp eMarkd ../../output/
         
     - name: Upload eMarkd artifact
@@ -50,7 +50,7 @@ jobs:
         cd eMark
         qmake
         make
-        mkdir -p output
+        mkdir -p ../output
         cp eMark-qt ../output/
         
     - name: Upload eMark-qt artifact

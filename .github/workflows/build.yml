@@ -25,7 +25,7 @@ jobs:
         run: |
           cd src
           make -f makefile.unix -j$(nproc) \
-            CXXFLAGS="-O3 -DNDEBUG -Wall" \
+            CXXFLAGS="-O3 -Wall" \
             LDFLAGS="-s"
           mkdir -p ../output
           cp eMarkd ../output/
@@ -55,7 +55,7 @@ jobs:
 
       - name: Build eMark-qt with max optimization & strip
         run: |
-          qmake eMark-qt.pro "CONFIG+=release" "QMAKE_CXXFLAGS+=-O3 -DNDEBUG"
+          qmake eMark-qt.pro "CONFIG+=release" "QMAKE_CXXFLAGS+=-O3"
           make -j$(nproc)
           mkdir -p output
           cp eMark-qt output/

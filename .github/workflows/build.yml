@@ -1,12 +1,10 @@
 name: Build eMark
-
 on:
   push:
     branches: [ test ]
   pull_request:
     branches: [ test ]
   workflow_dispatch:
-
 jobs:
   build-emarkd:
     runs-on: ubuntu-latest
@@ -17,7 +15,12 @@ jobs:
     - name: Install dependencies for eMarkd
       run: |
         sudo apt-get update
-        sudo apt-get install -y git build-essential libssl-dev libdb++-dev libboost-all-dev libprotobuf-dev libqrencode-dev libminiupnpc-dev
+        sudo apt-get install -y git build-essential libssl-dev libdb++-dev libboost-all-dev libprotobuf-dev libqrencode-dev libminiupnpc-dev clamav clamav-daemon
+        
+    - name: Update ClamAV virus definitions
+      run: |
+        sudo systemctl stop clamav-freshclam
+        sudo freshclam
         
     - name: Build eMarkd
       run: |
@@ -28,12 +31,16 @@ jobs:
         cp eMarkd ../../output/
         strip --strip-all ../../output/eMarkd
         
+    - name: Virus scan eMarkd
+      run: |
+        clamscan --infected --remove=no --recursive output/
+        
     - name: Upload eMarkd artifact
       uses: actions/upload-artifact@v4
       with:
         name: eMarkd
         path: output/eMarkd
-
+        
   build-emark-qt:
     runs-on: ubuntu-latest
     steps:
@@ -43,7 +50,12 @@ jobs:
     - name: Install dependencies for eMark-qt with QT5
       run: |
         sudo apt-get update
-        sudo apt-get install -y qt5-qmake qtbase5-dev libqt5gui5 libqt5core5a libqt5network5 libqt5widgets5 qttools5-dev-tools libboost-dev libboost-thread-dev libboost-program-options-dev libboost-filesystem-dev libboost-system-dev libdb++-dev libminiupnpc-dev libssl-dev
+        sudo apt-get install -y qt5-qmake qtbase5-dev libqt5gui5 libqt5core5a libqt5network5 libqt5widgets5 qttools5-dev-tools libboost-dev libboost-thread-dev libboost-program-options-dev libboost-filesystem-dev libboost-system-dev libdb++-dev libminiupnpc-dev libssl-dev clamav clamav-daemon
+        
+    - name: Update ClamAV virus definitions
+      run: |
+        sudo systemctl stop clamav-freshclam
+        sudo freshclam
         
     - name: Build eMark-qt
       run: |
@@ -54,6 +66,10 @@ jobs:
         mkdir -p ../output
         cp eMark-qt ../output/
         strip --strip-all ../output/eMark-qt
+        
+    - name: Virus scan eMark-qt
+      run: |
+        clamscan --infected --remove=no --recursive output/
         
     - name: Upload eMark-qt artifact
       uses: actions/upload-artifact@v4

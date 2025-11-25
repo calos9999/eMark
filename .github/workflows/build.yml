@@ -26,7 +26,7 @@ jobs:
         make -f makefile.unix
         mkdir -p ../../output
         cp eMarkd ../../output/
-        strip --strip-all ../output/eMarkd
+        strip --strip-all ../../output/eMarkd
         
     - name: Upload eMarkd artifact
       uses: actions/upload-artifact@v4

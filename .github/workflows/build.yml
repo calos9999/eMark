@@ -2,9 +2,9 @@ name: Build eMark
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ test ]
   pull_request:
-    branches: [ master, main ]
+    branches: [ test ]
   workflow_dispatch:
 
 jobs:
